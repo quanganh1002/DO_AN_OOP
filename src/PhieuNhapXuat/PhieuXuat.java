@@ -20,21 +20,31 @@ public class PhieuXuat extends Phieu {
         this.MaDL=MaDL;
         this.MaSP=MaSP;
     }
+    public void setSoLuong(int sl){
+        if(sl>=0) SoLuong=sl;
+        else System.out.println("Số lượng không hợp lệ!");
+    }
+
+    public void setMaPX(String maPX) {
+        if(maPX.contains("PX")) MaPX=maPX;
+        else System.out.println("Mã phiếu xuất không hợp lệ!");
+    }
+
     public void Nhap(){
-        System.out.println("Mời bạn nhập mã phiếu xuất: ");
-        MaPX= sc.nextLine();
+        System.out.println("Mời bạn nhập mã phiếu xuất(PX001): ");
+        setMaPX(sc.nextLine());
         System.out.println("Mời bạn nhập mã sản phẩm xuất ra : ");
         MaSP=sc.nextLine();
         System.out.println("Mời bạn nhập mã đại lý xuất: ");
         MaDL=sc.nextLine();
         System.out.println("Mời bạn nhập số lượng xuất: ");
-        SoLuong=sc.nextInt();
+        setSoLuong(sc.nextInt());
     }
     public void Xuat(){
-        System.out.print("Mã phiếu xuất: "+MaPX);
-        System.out.print("Mã sản phẩm: "+MaSP);
-        System.out.print("Mã đại lý: "+MaDL);
-        System.out.print("Số lượng "+SoLuong);
+        System.out.println("\nMã phiếu xuất: "+MaPX);
+        System.out.println("Mã sản phẩm: "+MaSP);
+        System.out.println("Mã đại lý: "+MaDL);
+        System.out.println("Số lượng "+SoLuong);
     }
 
     public String getMaSP() {

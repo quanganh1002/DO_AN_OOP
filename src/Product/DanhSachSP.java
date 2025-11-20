@@ -6,12 +6,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class DanhSachSP implements ITinhNang {
-    private ArrayList<SanPham> DanhSachCaoCap;
-    private ArrayList<SanPham> DanhSachPhoThong;
     private ArrayList<SanPham> DanhSachSP;
     public DanhSachSP(){
-        DanhSachCaoCap=new ArrayList<>();
-        DanhSachPhoThong=new ArrayList<>();
         DanhSachSP=new ArrayList<>();
     }
     public void Them() {
@@ -32,17 +28,24 @@ public class DanhSachSP implements ITinhNang {
                 case 1:
                     SanPhamCaoCap sp1 = new SanPhamCaoCap();
                     sp1.Nhap();
-                    DanhSachCaoCap.add(sp1);
-                    DanhSachSP.add(sp1);
-                    System.out.println("==> Đã thêm sản phẩm cao cấp!");
+                    SanPham s=found(sp1.getMaSP());
+                    if(s!=null) System.out.println("Đã có mã sản phẩm này rồi!");
+                    else {
+                        DanhSachSP.add(sp1);
+                        System.out.println("==> Đã thêm sản phẩm cao cấp!");
+                    }
                     break;
 
                 case 2:
                     SanPhamPhoThong sp2 = new SanPhamPhoThong();
                     sp2.Nhap();
-                    DanhSachPhoThong.add(sp2);
-                    DanhSachSP.add(sp2);
-                    System.out.println("==> Đã thêm sản phẩm phổ thông!");
+                    SanPham s2=found(sp2.getMaSP());
+                    if(s2!=null) System.out.println("Đã có mã sản phẩm này rồi!");
+                    else{
+                        DanhSachSP.add(sp2);
+                        System.out.println("==> Đã thêm sản phẩm phổ thông!");
+                    }
+
                     break;
 
                 case 0:
@@ -83,12 +86,6 @@ public class DanhSachSP implements ITinhNang {
         for (int i = 0; i < DanhSachSP.size(); i++) {
             SanPham SP = DanhSachSP.get(i);
             if (SP.getMaSP().equalsIgnoreCase(Masp)) {
-                if(SP instanceof SanPhamPhoThong){
-                    DanhSachPhoThong.remove(SP);
-                }
-                else if(SP instanceof SanPhamCaoCap){
-                    DanhSachCaoCap.remove(SP);
-                }
                 DanhSachSP.remove(i);
                 found = true;
                 break;
@@ -117,22 +114,28 @@ public class DanhSachSP implements ITinhNang {
     @Override
     public void Xem() {
         System.out.println("\n======== Danh sách sản phẩm phổ thông ========");
-        for(SanPham sp:DanhSachPhoThong) sp.Xuat();
+        for(SanPham sp:DanhSachSP){
+            if(sp instanceof SanPhamPhoThong) sp.Xuat();
+        }
         System.out.println("\n======== Danh sách sản phẩm cao cấp ========");
-        for(SanPham sp:DanhSachCaoCap) sp.Xuat();
+        for(SanPham sp:DanhSachSP){
+            if (sp instanceof SanPhamCaoCap) sp.Xuat();
+        }
     }
 
     public void XuatTonKho(){
-        System.out.print("Danh sách sản phẩm hết hàng: ");
+        System.out.println("Danh sách sản phẩm hết hàng: ");
         for (SanPham SP : DanhSachSP) {
             if (SP.getSoLuong() <= 20 && SP.getSoLuong() >= 0) {
                 System.out.print(SP.getTen() + " : " + SP.getSoLuong());
+                System.out.println();
             }
         }
         System.out.println("\nDanh sách sản phẩm còn tồn kho: ");
         for (SanPham SP : DanhSachSP) {
             if (SP.getSoLuong() >= 100) {
                 System.out.print(SP.getTen() + " : " + SP.getSoLuong());
+                System.out.println();
             }
         }
     }
@@ -148,7 +151,7 @@ public class DanhSachSP implements ITinhNang {
         try {
             PrintWriter pw = new PrintWriter(new FileWriter("SanPham.txt"));
             for (SanPham sp : DanhSachSP) {
-
+                if(sp.getMaSP().isEmpty())continue;
                 if (sp instanceof SanPhamCaoCap) {
                     pw.println("CAOCAP");
                     pw.println(sp.getTen());
@@ -167,21 +170,17 @@ public class DanhSachSP implements ITinhNang {
                 }
             }
             pw.close();
-            System.out.println("Ghi file thành công!");
         } catch (Exception e) {
             System.out.println("Lỗi ghi file: " + e.getMessage());
         }
     }
     public void docFile() {
         DanhSachSP.clear();
-        DanhSachCaoCap.clear();
-        DanhSachPhoThong.clear();
         try {
             Scanner sc = new Scanner(new File("SanPham.txt"));
 
             while (sc.hasNextLine()) {
                 String loai = sc.nextLine();
-
                 String ten = sc.nextLine();
                 String ma = sc.nextLine();
                 double gia = Double.parseDouble(sc.nextLine());
@@ -189,12 +188,10 @@ public class DanhSachSP implements ITinhNang {
                 int sl = Integer.parseInt(sc.nextLine());
 
                 if (loai.equals("CAOCAP")) {
-                    String bh = sc.nextLine();
+                    int bh=Integer.parseInt(sc.nextLine());
                     DanhSachSP.add(new SanPhamCaoCap(ten, ma, gia, ngay, sl, bh));
-                    DanhSachCaoCap.add(new SanPhamCaoCap(ten,ma,gia,ngay,sl,bh));
                 } else {
                     DanhSachSP.add(new SanPhamPhoThong(ten, ma, gia, ngay, sl));
-                    DanhSachPhoThong.add(new SanPhamPhoThong(ten, ma, gia, ngay, sl));
                 }
             }
 
@@ -204,6 +201,5 @@ public class DanhSachSP implements ITinhNang {
             System.out.println("Lỗi đọc file: " + e.getMessage());
         }
     }
-
 
 }

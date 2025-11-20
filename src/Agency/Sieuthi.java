@@ -3,13 +3,14 @@ package Agency;
 public class Sieuthi extends DaiLy {
     protected static String LoaiDL="Siêu thị";
     protected int HopDong;
-    Sieuthi(int HopDong){
-        super();
-        this.HopDong=HopDong;
-    }
-    Sieuthi(){
+
+    public Sieuthi(){
         super();
         HopDong=0;
+    }
+    public Sieuthi(String ten,String diachi,String ma,String std,String email,int hopDong){
+        super(ten,diachi,ma,std,email);
+        this.HopDong=hopDong;
     }
     public void setHopDong(int hopDong) {
         if(hopDong>0) HopDong=hopDong;
@@ -30,10 +31,7 @@ public class Sieuthi extends DaiLy {
         System.out.println("Hạn hợp đồng: "+HopDong+" tháng");
     }
 
-   public void Sieuthi(String ten, String ma_dl, String dia_chi,String sdt, String email, int HopDong){
-        super(ten,dia_chi,ma_dl,sdt,email);
-        this.HopDong=HopDong;
-   }
+
 
     public int getHopDong(){
         return HopDong;

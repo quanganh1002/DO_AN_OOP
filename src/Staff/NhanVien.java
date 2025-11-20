@@ -2,7 +2,7 @@ package Staff;
 import Interface.INhapXuat;
 
 import java.util.Scanner;
-class NhanVien implements INhapXuat {
+public class NhanVien implements INhapXuat {
     protected String ten;
     protected String MaNV;
     protected double LuongCoBan;
@@ -22,15 +22,24 @@ class NhanVien implements INhapXuat {
         LuongCoBan = 0;
         NgaySinh = "";
     }
+    public void setMaNV(String manv){
+        if(manv.contains("NV")) MaNV=manv;
+        else System.out.println("mã nhân viên không hợp lệ");
+    }
+
+    public void setLuongCoBan(double luongCoBan) {
+        if(luongCoBan>=0) luongCoBan=LuongCoBan;
+        else System.out.println("Lương cơ bản của nhân viên không hợp lý!");
+    }
 
     @Override
     public void Nhap() {
-        System.out.print("Nhập mã nhân viên: ");
-        MaNV=sc.nextLine();
+        System.out.print("Nhập mã nhân viên (Ví dụ NV001): ");
+        setMaNV(sc.nextLine());
         System.out.print("Nhập tên nhân viên: ");
         ten=sc.nextLine();
         System.out.print("Nhập lương của nhân viên (Ngìn đồng): ");
-        LuongCoBan=sc.nextInt();
+        setLuongCoBan(sc.nextDouble());
         sc.nextLine();
         System.out.print("Nhập ngày sinh của nhân viên: ");
         NgaySinh=sc.nextLine();

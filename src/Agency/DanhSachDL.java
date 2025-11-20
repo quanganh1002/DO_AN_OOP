@@ -33,14 +33,22 @@ public class DanhSachDL implements ITinhNang {
                 case 1:
                     Sieuthi st = new Sieuthi();
                     st.Nhap();
-                    danh_sach_dai_ly.add(st);
-                    System.out.println("==-Đã thêm siêu thị-==");
+                    DaiLy dl= found(st.getMa_dl());
+                    if(dl!=null) System.out.println("Đã có đại lý có mã này rồi!");
+                    else{
+                        danh_sach_dai_ly.add(st);
+                        System.out.println("==-Đã thêm siêu thị-==");
+                    }
                     break;
                 case 2:
                     CuaHang ch = new CuaHang();
                     ch.Nhap();
-                    danh_sach_dai_ly.add(ch);
-                    System.out.println("==-Đã thêm cửa hàng-==");
+                    DaiLy dl1=found(ch.getMa_dl());
+                    if(dl1!=null) System.out.println("Đã có đại lý có mã này rồi");
+                    else{
+                        danh_sach_dai_ly.add(ch);
+                        System.out.println("==-Đã thêm cửa hàng-==");
+                    }
                     break;
                 case 0:
                     System.out.println("Đã thoát thêm!");
@@ -53,15 +61,15 @@ public class DanhSachDL implements ITinhNang {
 
     @Override
     public void Sua(){
-    System.out.print("Nhập mã đại lý muốn sửa: ");
-    String ma_dl=sc.nextLine();
-    boolean found=false;
-    for(DaiLy dl:danh_sach_dai_ly){
-        if(dl.getMa_dl().equalsIgnoreCase(ma_dl)){
-            dl.Nhap();
-            found=true;
+        System.out.print("Nhập mã đại lý muốn sửa: ");
+        String ma_dl=sc.nextLine();
+        boolean found=false;
+        for(DaiLy dl:danh_sach_dai_ly){
+            if(dl.getMa_dl().equalsIgnoreCase(ma_dl)){
+                dl.Nhap();
+                found=true;
+            }
         }
-    }
         if(!found)System.out.println("không có đại lý trong danh sách!");
     }
 
@@ -126,6 +134,7 @@ public class DanhSachDL implements ITinhNang {
         try {
             PrintWriter pw = new PrintWriter(new FileWriter("DaiLy.txt"));
             for (DaiLy dl : danh_sach_dai_ly) {
+                if(dl.getMa_dl().isEmpty())continue;
 
                 if (dl instanceof Sieuthi) {
                     pw.println("SIEUTHI");
@@ -145,7 +154,6 @@ public class DanhSachDL implements ITinhNang {
                 }
             }
             pw.close();
-            System.out.println("Ghi file thành công!");
         } catch (Exception e) {
             System.out.println("Lỗi ghi file: " + e.getMessage());
         }
@@ -158,16 +166,16 @@ public class DanhSachDL implements ITinhNang {
             while (sc.hasNextLine()) {
                 String loai = sc.nextLine();
                 String ten = sc.nextLine();
-                String ma = sc.nextLine();
                 String diachi=sc.nextLine();
+                String ma = sc.nextLine();
                 String sdt =sc.nextLine();
                 String email=sc.nextLine();
 
                 if (loai.equals("SIEUTHI")) {
-                    int hopdong = sc.nextInt();
-                        danh_sach_dai_ly.add(new Sieuthi(String ten,String ma,String diachi,String sdt,String email,hopdong));
+                    int hopdong = Integer.parseInt(sc.nextLine());
+                    danh_sach_dai_ly.add(new Sieuthi(ten,diachi,ma,sdt,email,hopdong));
                 } else {
-                    danh_sach_dai_ly.add(new CuaHang(ten, ma, diachi, sdt, email));
+                    danh_sach_dai_ly.add(new CuaHang(ten, diachi, ma, sdt, email));
                 }
             }
 

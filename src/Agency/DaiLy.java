@@ -27,14 +27,19 @@ public DaiLy() {
     email = "";
 }
 
-@Override
+    public void setMa_dl(String ma_dl) {
+        if(ma_dl.contains("DL")) this.ma_dl=ma_dl;
+        else System.out.println("Mã đại lý không hợp lệ");
+    }
+
+    @Override
 public void Nhap() {
     System.out.print("Nhập tên đại lý: ");
     ten = sc.nextLine();
     System.out.print("Nhập địa chỉ đại lý: ");
     dia_chi = sc.nextLine();
-    System.out.print("Nhập mã đại lý: ");
-    ma_dl = sc.nextLine();
+    System.out.print("Nhập mã đại lý (Ví dụ DL001): ");
+    setMa_dl(sc.nextLine());
     System.out.print("Nhập số điện thoại: ");
     sdt = sc.nextLine();
     System.out.print("Nhập email: ");

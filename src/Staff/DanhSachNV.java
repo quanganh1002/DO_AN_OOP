@@ -1,4 +1,7 @@
 package Staff;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.ArrayList;
 import Interface.ITinhNang;
@@ -27,15 +30,24 @@ public class DanhSachNV implements ITinhNang {
                 case 1:
                     QuanLy nv1=new QuanLy();
                     nv1.Nhap();
-                    DanhSachNV.add(nv1);
-                    System.out.println("==> Đã thêm quản lý!");
+                    NhanVien n=found(nv1.getMaNV());
+                    if(n!=null)
+                        System.out.println("Đã có mã nhân viên này rồi!");
+                    else {
+                        DanhSachNV.add(nv1);
+                        System.out.println("==> Đã thêm quản lý!");
+                    }
                     break;
 
                 case 2:
                     CongNhan nv2=new CongNhan();
                     nv2.Nhap();
-                    DanhSachNV.add(nv2);
-                    System.out.println("==> Đã thêm nhân viên!");
+                    NhanVien n2=found(nv2.getMaNV());
+                    if(n2!=null) System.out.println("Đã có mã nhân viên này rồi!");
+                    else{
+                        DanhSachNV.add(nv2);
+                        System.out.println("==> Đã thêm nhân viên!");
+                    }
                     break;
 
                 case 0:
@@ -125,5 +137,64 @@ public class DanhSachNV implements ITinhNang {
         System.out.println("====== DANH SÁCH NHÂN VIÊN ======");
         for (NhanVien nv:DanhSachNV) nv.Xuat();
         System.out.println("==========================================");
+    }
+    public void ghiFile() {
+        try {
+            PrintWriter pw = new PrintWriter(new FileWriter("NhanVien.txt"));
+            for (NhanVien nv : DanhSachNV) {
+                if(nv.getMaNV().isEmpty())continue;
+                if (nv instanceof QuanLy) {
+                    pw.println("QuanLy");
+                    pw.println(nv.getMaNV());
+                    pw.println(nv.getTen());
+                    pw.println(nv.getLuongCoBan());
+                    pw.println(nv.getNgaySinh());
+                    pw.println(((QuanLy) nv).getHeSoChucVu());
+                } else {
+                    pw.println("CongNhan");
+                    pw.println(nv.getMaNV());
+                    pw.println(nv.getTen());
+                    pw.println(nv.getLuongCoBan());
+                    pw.println(nv.getNgaySinh());
+                }
+            }
+            pw.close();
+            System.out.println("Ghi file thành công!");
+        } catch (Exception e) {
+            System.out.println("Lỗi ghi file: " + e.getMessage());
+        }
+    }
+    public void docFile() {
+        DanhSachNV.clear();
+        try {
+            Scanner sc = new Scanner(new File("NhanVien.txt"));
+
+            while (sc.hasNextLine()) {
+                String loai = sc.nextLine();
+                String ma = sc.nextLine();
+                String ten = sc.nextLine();
+                double luong = Double.parseDouble(sc.nextLine());
+                String ngaysinh = sc.nextLine();
+
+                if (loai.equals("QuanLy")) {
+                    double hscv = Double.parseDouble(sc.nextLine());
+                    DanhSachNV.add(new QuanLy(ten, ma, luong, ngaysinh, hscv));
+                } else {
+                    DanhSachNV.add(new CongNhan(ten, ma, luong, ngaysinh));
+                }
+            }
+
+            sc.close();
+            System.out.print("Đã đọc file!");
+
+        } catch (Exception e) {
+            System.out.println("Lỗi đọc file: " + e.getMessage());
+        }
+    }
+    public NhanVien found(String ma){
+        for(NhanVien nv:DanhSachNV){
+            if( nv.getMaNV().equalsIgnoreCase(ma)) return  nv;
+        }
+        return  null;
     }
 }

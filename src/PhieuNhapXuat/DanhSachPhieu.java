@@ -4,6 +4,10 @@ import Interface.ITinhNang;
 import Product.SanPham;
 import Product.DanhSachSP;
 import Agency.DanhSachDL;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class DanhSachPhieu implements ITinhNang {
@@ -36,13 +40,23 @@ public class DanhSachPhieu implements ITinhNang {
                 case 1:
                     PhieuNhap p1=new PhieuNhap();
                     p1.Nhap();
-                    DanhSachPhieuNhap.add(p1);
+                    Phieu ph=found(p1.getMaPN());
+                    if(ph!=null) System.out.println("Đã có mã phiếu nhập này rồi!");
+                    else{
+                        DanhSachPhieuNhap.add(p1);
+                        System.out.println("Thêm phiếu nhập thành công!");
+                    }
                     break;
 
                 case 2:
                     PhieuXuat p2=new PhieuXuat();
                     p2.Nhap();
-                    DanhSachPhieuXuat.add(p2);
+                    Phieu ph2=found(p2.getMaPX());
+                    if(ph2!=null) System.out.println("Đã có mã phiếu xuất này rồi!");
+                    else{
+                        DanhSachPhieuXuat.add(p2);
+                        System.out.println("Thêm sản phẩm thành công!");
+                    }
                     break;
 
                 case 0:
@@ -235,5 +249,58 @@ public class DanhSachPhieu implements ITinhNang {
         for(PhieuNhap pn:DanhSachPhieuNhapOld) pn.Xuat();
         System.out.println("Danh sách phiếu xuất đã hoàn thành: ");
         for(PhieuXuat px:DanhSachPhieuXuatOld) px.Xuat();
+    }
+    public void ghiFile() {
+        try {
+            PrintWriter pw = new PrintWriter(new FileWriter("DaiLy.txt"));
+            for (PhieuNhap pn:DanhSachPhieuNhapOld) {
+                pw.println("PHIEUNHAP");
+                pw.println(pn.getMaPN());
+                pw.println(pn.getMaSP());
+                pw.println(pn.getSoLuong());
+            }
+            for(PhieuXuat px:DanhSachPhieuXuatOld){
+                pw.println("PHIEUXUAT");
+                pw.println(px.getMaPX());
+                pw.println(px.getMaSP());
+                pw.println(px.getSoLuong());
+                pw.println(px.getMaDL());
+            }
+            pw.close();
+        } catch (Exception e) {
+            System.out.println("Lỗi ghi file: " + e.getMessage());
+        }
+    }
+    public void docFile() {
+        DanhSachPhieuNhapOld.clear();
+        DanhSachPhieuXuatOld.clear();
+        try {
+            Scanner sc = new Scanner(new File("PhieuNhapXuat.txt"));
+
+            while (sc.hasNextLine()) {
+                String loai = sc.nextLine();
+                String ma = sc.nextLine();
+                String sp=sc.nextLine();
+                int sl = Integer.parseInt(sc.nextLine());
+                if (loai.equals("PHIEUXUAT")) {
+                    String dl=sc.nextLine();
+                    DanhSachPhieuXuatOld.add(new PhieuXuat(ma,sp,dl,sl));
+                } else {
+                    DanhSachPhieuNhapOld.add(new PhieuNhap(ma,sp,sl));
+                }
+            }
+            sc.close();
+        } catch (Exception e) {
+            System.out.println("Lỗi đọc file: " + e.getMessage());
+        }
+    }
+    public Phieu found(String ma){
+        for(PhieuNhap pn : DanhSachPhieuNhap){
+            if(pn.getMaPN().equalsIgnoreCase(ma)) return pn;
+        }
+        for(PhieuXuat px:DanhSachPhieuXuat){
+            if(px.getMaPX().equalsIgnoreCase(ma)) return px;
+        }
+        return null;
     }
 }

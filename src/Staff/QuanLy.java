@@ -33,5 +33,7 @@ public class QuanLy extends NhanVien {
         System.out.println("Tổng tiền lương: "+TinhLuong());
     }
 
-
+    public double getHeSoChucVu() {
+        return HeSoChucVu;
+    }
 }

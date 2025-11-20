@@ -1,13 +1,13 @@
 package Product;
 
 public class SanPhamCaoCap extends SanPham{
-    String ThoiGianBH;
+    int ThoiGianBH;
 
     SanPhamCaoCap(){
         super();
-        ThoiGianBH="";
+        ThoiGianBH=0;
     }
-    SanPhamCaoCap(String Ten,String Ma,double Gia,String NgaySX,int SoLuong,String ThoiGianBH){
+    SanPhamCaoCap(String Ten,String Ma,double Gia,String NgaySX,int SoLuong,int ThoiGianBH){
         super(Ten,Ma,Gia,NgaySX,SoLuong);
         this.ThoiGianBH=ThoiGianBH;
     }
@@ -15,18 +15,23 @@ public class SanPhamCaoCap extends SanPham{
     @Override
     public void Xuat() {
         super.Xuat();
-        System.out.println("Thời gian bảo hành của sản phẩm: "+ThoiGianBH);
+        sc.nextLine();
+        System.out.println("Thời gian bảo hành của sản phẩm: "+ThoiGianBH+" Tháng");
+        setThoiGianBH(sc.nextInt());
     }
 
     @Override
     public void Nhap() {
         super.Nhap();
         sc.nextLine();
-        System.out.print("Thời gian bảo hành: ");
-        ThoiGianBH=sc.nextLine();
+        System.out.print("Thời gian bảo hành (Tháng): ");
     }
 
-    public String getThoiGianBH() {
+    public int getThoiGianBH() {
         return ThoiGianBH;
+    }
+    public void setThoiGianBH(int bh){
+        if(bh>=0) ThoiGianBH=bh;
+        else System.out.println("Thời gian bảo hành không hợp lệ!");
     }
 }

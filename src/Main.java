@@ -2,6 +2,8 @@ import Agency.DanhSachDL;
 import PhieuNhapXuat.DanhSachPhieu;
 import Product.*;
 import Staff.DanhSachNV;
+import Economy.Danhsachtaichinh;
+
 import java.util.Scanner;
 
 public class Main {
@@ -41,6 +43,7 @@ public class Main {
                     break;
                 case 0:
                     System.out.println("Thoát chức năng quản lý nhân viên");
+
                     break;
                 default:
                     System.out.println("Lựa chọn không hợp lý, mời bạn nhập lại!");
@@ -84,7 +87,7 @@ public class Main {
                     break;
                 case 0:
                     System.out.println("Thoát chức năng quản lý sản phẩm");
-                    QLSanPham.ghiFile();
+
                     break;
                 default:
                     System.out.println("Lựa chọn không hợp lý mời bạn nhập lại");
@@ -129,6 +132,7 @@ public class Main {
                     break;
                 case 7:
                     QLPhieu.CapNhapSL(QLSanPham,QLDaiLy);
+                    QLPhieu.ghiFile();
                     break;
                 case 0:
                     System.out.println("Thoát chức năng quản lý hóa đơn xuất nhập");
@@ -179,6 +183,48 @@ public class Main {
         } while (choice != 0);
 
     }
+    Danhsachtaichinh Qlytaichinh=new Danhsachtaichinh();
+    void MenuTC(){
+        int choice;
+        do{
+            System.out.println("\n========== Các tính năng quản lý tài chính==========");
+            System.out.println("1. Thêm loại tài chính");
+            System.out.println("2. Xóa 1 loại tài chính");
+            System.out.println("3. Tìm kiếm thông tin về tài chính");
+            System.out.println("4. Sửa thông tin  về tài chính");
+            System.out.println("5. Xem toàn bộ tài chính hiện có");
+            System.out.println("0. Thoát");
+            System.out.println("========================================\n");
+            System.out.print("Mời bạn lựa chọn: ");
+            choice= sc.nextInt();
+            switch (choice)
+            {
+                case 1:
+                    Qlytaichinh.Them();
+                    break;
+                case 2:
+                    Qlytaichinh.Xoa();
+                    break;
+                case 3:
+                    Qlytaichinh.TimKiem();
+                    break;
+                case 4:
+                    Qlytaichinh.Sua();
+                    break;
+                case 5:
+                    Qlytaichinh.Xem();
+                    break;
+                case 0:
+                    System.out.println("Thoát khỏi thanh công cụ");
+                    Qlytaichinh.ghifile();
+                    break;
+                default:
+                    System.out.println("Hiện ta bạn nhập phương thức đã sai");
+                    break;
+            }
+
+        }while(choice!=0);
+    }
     void MenuChinh(){
         int choice;
         do{
@@ -187,6 +233,7 @@ public class Main {
             System.out.println("2.Quản lý nhân viên");
             System.out.println("3.Quản lý sản phẩm");
             System.out.println("4.Quản lý hóa đơn nhập xuất");
+            System.out.println("5.Quản lý tài chính");
             System.out.println("0.Thoát");
             System.out.println("=========================");
             System.out.print("Lựa chọn của bạn: ");
@@ -204,8 +251,15 @@ public class Main {
                 case 4:
                     MenuHoaDon();
                     break;
+                case 5:
+                    MenuTC();
+                    break;
                 case 0:
                     System.out.println("Thoát chức năng quản lý");
+                    QLNhanVien.ghiFile();
+                    QLSanPham.ghiFile();
+                    QLDaiLy.ghiFile();
+                    Qlytaichinh.ghifile();
                     break;
                 default:
                     System.out.println("Lựa chọn không hợp lý mời bạn nhập lại");
@@ -216,6 +270,11 @@ public class Main {
 
     public static void main(String[] args){
         Main m=new Main();
+        m.QLSanPham.docFile();
+        m.QLDaiLy.docFile();
+        m.QLNhanVien.docFile();
+        m.Qlytaichinh.docfile();
+        m.QLPhieu.docFile();
         m.MenuChinh();
     }
 }

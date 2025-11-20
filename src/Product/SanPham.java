@@ -30,15 +30,15 @@ public class SanPham implements INhapXuat {
     public void Nhap() {
         System.out.print("Nhập tên sản phẩm: ");
         ten=sc.nextLine();
-        System.out.print("Nhập mã sản phẩm: ");
-        MaSP=sc.nextLine();
+        System.out.print("Nhập mã sản phẩm (Ví dụ: SP001): ");
+        setMaSP(sc.nextLine());
         System.out.print("Nhập Giá sản phẩm (Ngìn đồng): ");
-        Gia=sc.nextInt();
+        setGia(sc.nextInt());
         sc.nextLine();
         System.out.print("Nhập ngày sản xuất của sản phẩm: ");
         NgaySX=sc.nextLine();
         System.out.print("Nhập Số lượng sản phẩm: ");
-        SoLuong=sc.nextInt();
+        setSoLuong(sc.nextInt());
     }
 
     @Override
@@ -72,6 +72,15 @@ public class SanPham implements INhapXuat {
     }
 
     public void setSoLuong(int soLuong) {
-        SoLuong = soLuong;
+        if(soLuong>=0) SoLuong=soLuong;
+        else System.out.println("Số lượng sản phẩm không hợp lệ!");
+    }
+    public void setGia(int gia){
+        if(gia>=0) Gia=gia;
+        else System.out.println("Giá sản phẩm không hợp lệ!");
+    }
+    public void setMaSP(String ma){
+        if(ma.contains("SP")) MaSP=ma;
+        else System.out.println("Mã sản phẩm không hợp lệ!");
     }
 }
